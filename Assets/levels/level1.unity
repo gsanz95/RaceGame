@@ -509,7 +509,7 @@ Prefab:
     - target: {fileID: 114199416652428170, guid: e565e4f3e2d47a74a806c87c35250517,
         type: 2}
       propertyPath: jump_force
-      value: 20000
+      value: 37000
       objectReference: {fileID: 0}
     - target: {fileID: 114199416652428170, guid: e565e4f3e2d47a74a806c87c35250517,
         type: 2}
@@ -519,12 +519,12 @@ Prefab:
     - target: {fileID: 114199416652428170, guid: e565e4f3e2d47a74a806c87c35250517,
         type: 2}
       propertyPath: speed_modifier
-      value: 17
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 114199416652428170, guid: e565e4f3e2d47a74a806c87c35250517,
         type: 2}
       propertyPath: fall_gravity
-      value: 1700
+      value: 2800
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e565e4f3e2d47a74a806c87c35250517, type: 2}

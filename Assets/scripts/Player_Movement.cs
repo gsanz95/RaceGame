@@ -4,11 +4,12 @@ public class Player_Movement : MonoBehaviour {
 
     // Movement with forces
     public Rigidbody player_rigid_body;
-    public float forward_force = 2000f;
-    public float side_force = 500f;
-    public float jump_force = 3000f;
-    public float fall_gravity = 500f;
-    float ground_level = .5f;
+    public float forward_force = 1000f;
+    public float side_force = 50f;
+    public float jump_force = 2000f;
+    public float fall_gravity = 2000f;
+    float ground_barrier = .5f;
+    float ground_level = 1f;
 
     // Movement with velocity
     public float speed_modifier = 100f;
@@ -17,6 +18,7 @@ public class Player_Movement : MonoBehaviour {
     float forward_speed = 0f;
     float vertical_speed = 0f;
     public bool isTouchingGround = true;
+    public float max_intended_height = 1.8f;
     Vector3 movement;
     Vector3 player_updated_position;
 
@@ -31,50 +33,36 @@ public class Player_Movement : MonoBehaviour {
     {
         ForwardMovement();
 
-        //player_rigid_body.AddForce(0, 0, forward_force * Time.deltaTime);
-
         if(isTouchingGround) {
-            /*if ( Input.GetKey("d") )
-            {
-                player_rigid_body.AddForce(side_force * Time.deltaTime, 0 , 0, ForceMode.VelocityChange);
-            }
-
-            if (Input.GetKey("a"))
-            {
-                player_rigid_body.AddForce(-side_force * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
-            }
-
-            if(Input.GetKey("space")) {
-                player_rigid_body.AddForce(0, jump_force * Time.deltaTime, 0);
-            }*/
-
-            if(Input.GetKey("space")) {
-                player_rigid_body.AddForce(0, jump_force * Time.deltaTime, 0);
-
-            }
+            DoJump();
         }
 
-        if(player_rigid_body.transform.position.y > 1.8 && (player_rigid_body.position.y > 1)) {
-            player_rigid_body.AddForce(0, -(fall_gravity * Time.deltaTime), 0);
-        }
+        Fall();
 
         SidewaysMovement();
         UpdatePosition();
 
-        Debug.Log(player_rigid_body.transform.position);
-        Debug.Log(player_rigid_body.velocity);
-
-        if(player_rigid_body.position.y < ground_level) {
-            FindObjectOfType<Game_Manager>().EndGame();
-        }
+        //Debug.Log(player_rigid_body.velocity);
+        CheckIfBelowGround();
     }
 
     void ForwardMovement() {
+        //player_rigid_body.AddForce(0, 0, forward_force * Time.deltaTime);
         forward_speed += side_speed_modifier;
         forward_speed *= Time.deltaTime;
     }
 
     void SidewaysMovement() {
+        /*if ( Input.GetKey("d") )
+        {
+            player_rigid_body.AddForce(side_force * Time.deltaTime, 0 , 0, ForceMode.VelocityChange);
+        }
+
+        if (Input.GetKey("a"))
+        {
+            player_rigid_body.AddForce(-side_force * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
+        }*/
+        
         horizontal_speed = Input.GetAxis("Horizontal") * speed_modifier;
         horizontal_speed *= Time.deltaTime;
     }
@@ -84,5 +72,24 @@ public class Player_Movement : MonoBehaviour {
         player_updated_position = player_rigid_body.transform.position + movement;
 
         player_rigid_body.MovePosition(player_updated_position);
+    }
+
+    void CheckIfBelowGround() {
+        if(player_rigid_body.position.y < ground_barrier) {
+            FindObjectOfType<Game_Manager>().EndGame();
+        }
+    }
+
+    void DoJump() {
+        if(Input.GetKey("space")) {
+                player_rigid_body.AddForce(0, jump_force * Time.deltaTime, 0);
+
+            }
+    }
+
+    void Fall() {
+        if(player_rigid_body.transform.position.y > max_intended_height && (player_rigid_body.position.y > ground_level)) {
+            player_rigid_body.AddForce(0, -(fall_gravity * Time.deltaTime), 0);
+        }
     }
 }
